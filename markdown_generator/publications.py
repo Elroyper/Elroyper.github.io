@@ -72,6 +72,15 @@ for row, item in publications.iterrows():
     
     md = "---\ntitle: \""   + item.title + '"\n'
     
+    category = item.category.strip()  # 确保无空格
+    
+    # 支持的分类列表
+    # 新增 category 字段
+    if item.category in ["books", "manuscripts", "conferences"]:
+        md += f"category: {item.category}\n"
+    else:
+        raise ValueError(f"Invalid category value: {item.category}. Must be one of books, manuscripts, conferences.")
+    
     md += """collection: publications"""
     
     md += """\npermalink: /publication/""" + html_filename
@@ -104,5 +113,11 @@ for row, item in publications.iterrows():
        
     with open("../_publications/" + md_filename, 'w') as f:
         f.write(md)
+
+    #output_dir = f"../_publications/_{category}s"  # e.g., ../_books, ../_manuscripts
+    #os.makedirs(output_dir, exist_ok=True)  # 确保输出目录存在
+
+    #with open(os.path.join(output_dir, md_filename), 'w') as f:
+    #    f.write(md)
 
 
